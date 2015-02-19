@@ -1,32 +1,37 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title></title>
     <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-  </head>
-  <body>
-    <div id="wrapper">
-      {% block header %}
-      <header>
-        <h1>Freeshelf</h1>
-      </header>
-      {% endblock %}
+</head>
+<body>
+<div id="wrapper">
+    {% block header %}
+        <header>
+            <h1>Freeshelf</h1>
+        </header>
 
-      {% block body %}{% endblock %}
+        {% for message in get_flashed_messages() %}
+            <div class="flash">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endblock %}
 
-      {% block footer %}
-      <footer>
+    {% block body %}{% endblock %}
 
-      </footer>
-      {% endblock %}
-    </div>
+    {% block footer %}
+        <footer>
 
-    <script type="text/javascript" href="{{ url_for('static', filename='modernizr.js') }}"></script>
-    <script type="text/javascript" href="{{ url_for('static', filename='main.js') }}"></script>
-  </body>
+        </footer>
+    {% endblock %}
+</div>
+
+<script type="text/javascript" href="{{ url_for('static', filename='modernizr.js') }}"></script>
+<script type="text/javascript" href="{{ url_for('static', filename='main.js') }}"></script>
+</body>
 </html>
 

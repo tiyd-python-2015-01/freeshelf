@@ -1,4 +1,10 @@
-from . import db, bcrypt
+from . import db, bcrypt, login_manager
+from flask.ext.login import UserMixin
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(id)
 
 
 class Book(db.Model):
@@ -11,7 +17,7 @@ class Book(db.Model):
         return "<Book {}>".format(self.title)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)

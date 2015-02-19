@@ -4,6 +4,7 @@ from .extensions import (
     db,
     migrate,
     debug_toolbar,
+    bcrypt,
 )
 
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/freeshelf.db"
@@ -17,5 +18,6 @@ app.config.from_pyfile('application.cfg', silent=True)
 db.init_app(app)
 debug_toolbar.init_app(app)
 migrate.init_app(app, db)
+bcrypt.init_app(app)
 
 from . import views, models

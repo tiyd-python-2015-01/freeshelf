@@ -9,3 +9,6 @@ migrate = Migrate()
 
 from flask.ext.debugtoolbar import DebugToolbarExtension
 debug_toolbar = DebugToolbarExtension()
+
+from flask.ext.bcrypt import Bcrypt
+bcrypt = Bcrypt()

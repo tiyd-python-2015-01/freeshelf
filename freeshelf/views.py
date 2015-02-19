@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, request, url_for
 from flask.ext.login import login_user
 
-from . import app
-from .forms import LoginForm
+from . import app, db
+from .forms import LoginForm, RegistrationForm
 from .models import Book, User
 
 
@@ -33,3 +33,27 @@ def login():
 
     flash_errors(form)
     return render_template("login.html", form=form)
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash("A user with that email address already exists.")
+        else:
+            user = User(name=form.name.data,
+                        email=form.email.data,
+                        password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash("You have been registered and logged in.")
+            return redirect(url_for("index"))
+    else:
+        flash_errors(form)
+
+    return render_template("register.html", form=form)
+
+

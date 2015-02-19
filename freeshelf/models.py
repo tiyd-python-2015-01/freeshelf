@@ -25,7 +25,6 @@ class User(db.Model, UserMixin):
 
     def get_password(self):
         return getattr(self, "_password", None)
-        return self._password
 
     def set_password(self, password):
         self._password = password

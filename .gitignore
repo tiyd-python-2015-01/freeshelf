@@ -44,5 +44,4 @@ docs/_build
 
 # Virtualenvs
 env
-env*
 .python-version

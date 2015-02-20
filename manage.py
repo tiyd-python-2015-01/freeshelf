@@ -5,7 +5,7 @@ from flask.ext.script import Manager, Shell, Server
 from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
-from freeshelf import app, db
+from freeshelf import app, db, models
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_PATH = os.path.join(HERE, 'tests')
@@ -23,7 +23,7 @@ def make_shell_context():
         in the context of the app
     """
 
-    return dict(app=app, db=db)
+    return dict(app=app, db=db, Book=models.Book, User=models.User)
 
 
 @manager.command

@@ -10,6 +10,19 @@
                 <br/>
                 {{ book.description }}
             {% endif %}
+
+            {% if current_user.is_active() %}
+                <div class="book-actions">
+                    {% if book in current_user.favorite_books %}
+                        <em>favorite</em>
+                    {% else %}
+                        <form action="{{ url_for("add_favorite") }}" method="post">
+                            <input type="hidden" name="book_id" value="{{ book.id }}"/>
+                            <input type="submit" value="Add as favorite"/>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
 {% endblock %}

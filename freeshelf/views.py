@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, request, url_for
-from flask.ext.login import login_user
+from flask.ext.login import login_user, login_required, current_user
 
 from . import app, db
 from .forms import LoginForm, RegistrationForm
-from .models import Book, User
+from .models import Book, User, Favorite
 
 
 def flash_errors(form, category="warning"):
@@ -55,5 +55,16 @@ def register():
         flash_errors(form)
 
     return render_template("register.html", form=form)
+
+@app.route("/favorite", methods=["POST"])
+@login_required
+def add_favorite():
+    book_id = request.form['book_id']
+    book = Book.query.get(book_id)
+    favorite = Favorite(user=current_user, book=book)
+    db.session.add(favorite)
+    db.session.commit()
+    flash("You have added {} as a favorite.".format(book.title))
+    return redirect(url_for("index"))
 
 

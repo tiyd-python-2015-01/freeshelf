@@ -35,6 +35,10 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.encrypted_password, password)
 
+    @property
+    def favorite_books(self):
+        return [favorite.book for favorite in self.favorites]
+
     def __repr__(self):
         return "<User {}>".format(self.email)
 

@@ -10,6 +10,7 @@ def load_user(id):
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
+    authors = db.Column(db.Text)
     description = db.Column(db.Text)
     url = db.Column(db.String(255), nullable=False, unique=True)
 

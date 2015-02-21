@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import csv
 import os
 
 from flask.ext.script import Manager, Shell, Server
@@ -32,6 +33,27 @@ def test():
     import pytest
     exit_code = pytest.main([TEST_PATH, '--verbose'])
     return exit_code
+
+@manager.command
+def seed():
+    """Seed the books with all books in seed_books.csv."""
+    books_added = 0
+    books_updated = 0
+    with open('seed_books.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            book = models.Book.query.filter_by(url=row['url']).first()
+            if book is None:
+                book = models.Book()
+                books_added += 1
+            else:
+                books_updated += 1
+            for key, value in row.items():
+                setattr(book, key, value)
+            db.session.add(book)
+        db.session.commit()
+        print("{} books added, {} books updated.".format(books_added, books_updated))
+
 
 
 if __name__ == '__main__':

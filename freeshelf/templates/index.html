@@ -3,26 +3,35 @@
 {% block body %}
     <h2>All books</h2>
 
-    {% for book in books %}
-        <div class="book">
-            <a href="{{ book.url }}">{{ book.title }}</a>
-            {% if book.description %}
-                <br/>
-                {{ book.description }}
-            {% endif %}
+    {% set block_count = 3 %}
 
-            {% if current_user.is_active() %}
-                <div class="book-actions">
-                    {% if book in current_user.favorite_books %}
-                        <em>favorite</em>
-                    {% else %}
-                        <form action="{{ url_for("add_favorite") }}" method="post">
-                            <input type="hidden" name="book_id" value="{{ book.id }}"/>
-                            <input type="submit" value="Add as favorite"/>
-                        </form>
-                    {% endif %}
-                </div>
-            {% endif %}
-        </div>
-    {% endfor %}
+    <ul class="blocks-{{ block_count }}">
+        {% for book in books %}
+            <li class="book {% if loop.index % block_count == 1 %}block-first{% endif %}">
+                <a href="{{ book.url }}">{{ book.title }}</a>
+                {% if book.authors %}
+                    <br/>
+                    <em>{{ book.authors }}</em>
+                {% endif %}
+                {% if book.description %}
+                    <br/>
+                    {{ book.description }}
+                {% endif %}
+
+                {% if current_user.is_active() %}
+                    <div class="book-actions">
+                        {% if book in current_user.favorite_books %}
+                            <em>favorite</em>
+                        {% else %}
+                            <form action="{{ url_for("add_favorite") }}" method="post">
+                                <input type="hidden" name="book_id" value="{{ book.id }}"/>
+                                <input type="submit" value="Add as favorite"/>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
 {% endblock %}

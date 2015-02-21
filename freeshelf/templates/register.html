@@ -1,20 +1,14 @@
 {% extends "layout.html" %}
+{% import "forms.html" as forms %}
 
 {% block body %}
-    <form method="POST" action="{{ url_for("register") }}">
+    <form method="POST" action="{{ url_for("register") }}" class="forms">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.name.label }} {{ form.name(size=20) }}
-        </div>
-        <div>
-            {{ form.email.label }} {{ form.email(size=20) }}
-        </div>
-        <div>
-            {{ form.password.label }} {{ form.password(size=20) }}
-        </div>
-        <div>
-            {{ form.password_verification.label }} {{ form.password_verification(size=20) }}
-        </div>
-        <input type="submit" value="Register">
+        {{ forms.field(form.name, size=20) }}
+        {{ forms.field(form.email, size=20) }}
+        {{ forms.field(form.password, size=20) }}
+        {{ forms.field(form.password_verification, size=20) }}
+
+        <input type="submit" class="btn btn-blue" value="Register">
     </form>
 {% endblock %}

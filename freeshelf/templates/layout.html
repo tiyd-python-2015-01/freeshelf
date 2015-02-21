@@ -14,17 +14,25 @@
             <h1>Freeshelf</h1>
         </header>
 
-        <nav>
-            <ul>
-                <li><a href="{{ url_for("index") }}">Home</a></li>
-                {% if current_user.is_active() %}
-                    <li>Welcome, {{ current_user.name }}!</li>
-                {% else %}
-                    <li><a href="{{ url_for("login") }}">Login</a></li>
-                    <li><a href="{{ url_for("register") }}">Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <div class="group">
+            <nav class="navbar navbar-left">
+                <ul>
+                    <li><a href="{{ url_for("index") }}">Home</a></li>
+                </ul>
+            </nav>
+            <nav class="navbar navbar-right">
+                <ul>
+                    {% if current_user.is_active() %}
+                        <li>Welcome, {{ current_user.name }}!</li>
+                        <li><a href="{{ url_for("logout") }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for("login") }}">Login</a></li>
+                        <li><a href="{{ url_for("register") }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
 
         {% for message in get_flashed_messages() %}
             <div class="flash">

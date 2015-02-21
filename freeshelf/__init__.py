@@ -11,6 +11,7 @@ from .extensions import (
 SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/freeshelf.db"
 DEBUG = True
 SECRET_KEY = 'development-key'
+DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(__name__)

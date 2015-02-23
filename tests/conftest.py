@@ -5,6 +5,7 @@ import pytest
 
 from freeshelf import app as _app
 from freeshelf import db as _db
+from freeshelf.models import User
 
 
 dbfile = tempfile.NamedTemporaryFile(delete=False)
@@ -73,8 +74,12 @@ def client(app, db):
     return app.test_client()
 
 
-
-
+@pytest.fixture(scope='function')
+def user(session):
+    user = User(name="test", email="test@example.org", password="password")
+    session.add(user)
+    session.commit()
+    return user
 
 
 

@@ -9,6 +9,9 @@
         {% for book in books %}
             <li class="book {% if loop.index % block_count == 1 %}block-first{% endif %}">
                 <a href="{{ book.url }}">{{ book.title }}</a>
+                {% if book in current_user.favorite_books %}
+                    <i class="fa fa-star"></i>
+                {% endif %}
                 {% if book.authors %}
                     <br/>
                     <em>{{ book.authors }}</em>
@@ -20,12 +23,11 @@
 
                 {% if current_user.is_active() %}
                     <div class="book-actions">
-                        {% if book in current_user.favorite_books %}
-                            <em>favorite</em>
-                        {% else %}
-                            <form action="{{ url_for("add_favorite") }}" method="post">
+                        <a class="btn btn-smaller" href="{{ url_for("edit_book", id=book.id) }}">Edit book</a>
+                        {% if book not in current_user.favorite_books %}
+                            <form action="{{ url_for("add_favorite") }}" method="post" class="inline">
                                 <input type="hidden" name="book_id" value="{{ book.id }}"/>
-                                <input type="submit" value="Add as favorite"/>
+                                <input type="submit" class="btn btn-smaller" value="Add as favorite"/>
                             </form>
                         {% endif %}
                     </div>

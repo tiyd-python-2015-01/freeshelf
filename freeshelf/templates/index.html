@@ -25,8 +25,7 @@
                     <div class="book-actions">
                         <a class="btn btn-smaller" href="{{ url_for("edit_book", id=book.id) }}">Edit book</a>
                         {% if book not in current_user.favorite_books %}
-                            <form action="{{ url_for("add_favorite") }}" method="post" class="inline">
-                                <input type="hidden" name="book_id" value="{{ book.id }}"/>
+                            <form action="{{ url_for("add_favorite", id=book.id) }}" method="post" class="inline">
                                 <input type="submit" class="btn btn-smaller" value="Add as favorite"/>
                             </form>
                         {% endif %}

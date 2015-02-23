@@ -47,7 +47,6 @@ def edit_book(id):
     form = BookForm(obj=book)
     if form.validate_on_submit():
         form.populate_obj(book)
-        db.session.add(book)
         db.session.commit()
         flash("The book has been updated.")
         return redirect(url_for("index"))
@@ -58,11 +57,10 @@ def edit_book(id):
                            button="Update book")
 
 
-@app.route("/favorite", methods=["POST"])
+@app.route("/book/<int:id>/favorite", methods=["POST"])
 @login_required
-def add_favorite():
-    book_id = request.form['book_id']
-    book = Book.query.get(book_id)
+def add_favorite(id):
+    book = Book.query.get(id)
     favorite = Favorite(user=current_user, book=book)
     db.session.add(favorite)
     db.session.commit()

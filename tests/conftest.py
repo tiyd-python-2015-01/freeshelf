@@ -22,7 +22,7 @@ WTF_CSRF_ENABLED = False
 
 _app.config.from_object(__name__)
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def app(request):
     """Session-wide test `Flask` application."""
     # Establish an application context before running the tests.
@@ -36,7 +36,7 @@ def app(request):
     return _app
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def db(app, request):
     """Session-wide test database."""
     def teardown():
@@ -49,7 +49,7 @@ def db(app, request):
     return _db
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def session(db, request):
     """Creates a new database session for a test."""
     connection = db.engine.connect()
@@ -69,12 +69,12 @@ def session(db, request):
     return session
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def client(app, db):
     return app.test_client()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def user(session):
     user = User(name="test", email="test@example.org", password="password")
     session.add(user)

@@ -1,10 +1,15 @@
-{% macro field(field) -%}
+{% macro field(field) %}
     <div>
         {% if field.errors %}
             {% set field_class = "input-error" %}
         {% endif %}
         <label for="{{ field.id }}">
-            {{ field.label.text }}
+
+            {% if field.flags.required %}
+                <strong>{{ field.label.text }}</strong>
+            {% else %}
+                {{ field.label.text }}
+            {% endif %}
             {{ field(class_=field_class, **kwargs) }}
             {% if field.errors %}
                 {% for e in field.errors %}
@@ -13,4 +18,4 @@
             {% endif %}
         </label>
     </div>
-{%- endmacro %}
+{% endmacro %}

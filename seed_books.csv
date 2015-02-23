@@ -1,7 +1,8 @@
 title,authors,url,description
-Structure and Interpretation of Computer Programs,Gerald Jay Sussman and Hal Abelson,https://mitpress.mit.edu/sicp/,An excellent computer science text used in introductory courses at MIT. One of the bibles of the LISP/Scheme world.
+Structure and Interpretation of Computer Programs,"Gerald Jay Sussman, Hal Abelson, and Julie Sussman",https://mitpress.mit.edu/sicp/,An excellent computer science text used in introductory courses at MIT. One of the bibles of the LISP/Scheme world.
 Explore Flask,Robert Picard,https://exploreflask.com/,Best practices and patterns for developing web applications with Flask.
 Think Python,Allen B. Downey,http://www.greenteapress.com/thinkpython/,An introduction to Python programming for beginners.
 Think Bayes,Allen B. Downey,http://www.greenteapress.com/thinkbayes/,An introduction to Bayesian statistics using computational methods.
 Think Stats,Allen B. Downey,http://greenteapress.com/thinkstats/,An introduction to probability and statistics for Python programmers.
 Think Complexity,Allen B. Downey,http://www.greenteapress.com/complexity/index.html,"This book is about complexity science, data structures and algorithms, intermediate programming in Python, and the philosophy of science."
+Hacking Secret Ciphers with Python,Al Sweigart,http://inventwithpython.com/hacking/index.html,"This book teaches complete beginners how to program in the Python programming language. The book features the source code to several ciphers and hacking programs for these ciphers. The programs include the Caesar cipher, transposition cipher, simple substitution cipher, multiplicative & affine ciphers, Vigenere cipher, and hacking programs for each of these ciphers."

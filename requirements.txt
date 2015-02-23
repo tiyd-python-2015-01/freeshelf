@@ -28,7 +28,13 @@ Flask-Script==2.0.5
 ## Config
 flask-appconfig==0.9.1
 
+## Heroku
+gunicorn==19.2.1
+psycopg2==2.6
+
 # Everything the developer needs in addition to the production requirements
+
+Flask-DebugToolbar==0.9.1
 
 ## Testing
 pytest>=2.6.4

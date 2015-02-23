@@ -6,3 +6,7 @@ body {
 .book {
     margin-bottom: 2rem;
 }
+
+.inline {
+    display: inline;
+}

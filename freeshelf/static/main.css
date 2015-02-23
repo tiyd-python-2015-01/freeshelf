@@ -1,6 +1,35 @@
 body {
     width: 70%;
-    margin: 10px auto;
+    margin: 0 auto;
+}
+
+.topbar {
+    padding-top: 20px;
+    background-color: #673AB7;
+    margin-bottom: 20px;
+}
+
+.topbar h1 {
+    padding-left: 1rem;
+    color: white;
+}
+
+.topbar h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.topbar .navigation {
+    background-color: #D1C4E9;
+    padding: 1rem;
+}
+
+.topbar .navigation a {
+    color: black;
 }
 
 .book {
@@ -9,4 +38,8 @@ body {
 
 .inline {
     display: inline;
+}
+
+body, h1, h2, h3, h4, h5, h6, .btn, input[type="submit"].btn {
+    font-family: 'Roboto', sans-serif;
 }

@@ -9,7 +9,7 @@ from .extensions import (
     config,
 )
 
-SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/freeshelf.db"
+SQLALCHEMY_DATABASE_URI = "postgres://localhost/freeshelf"
 DEBUG = True
 SECRET_KEY = 'development-key'
 DEBUG_TB_INTERCEPT_REDIRECTS = False

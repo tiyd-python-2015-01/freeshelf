@@ -1,4 +1,4 @@
-"""empty message
+"""Add book table
 
 Revision ID: 2b33b099d11
 Revises: None

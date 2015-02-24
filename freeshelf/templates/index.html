@@ -29,6 +29,7 @@
                                 <input type="submit" class="btn btn-smaller" value="Add as favorite"/>
                             </form>
                         {% endif %}
+                        <a class="btn btn-smaller" href="{{ url_for("book_data", id=book.id) }}">Click data</a>
                     </div>
                 {% endif %}
             </li>

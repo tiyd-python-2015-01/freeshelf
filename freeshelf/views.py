@@ -1,9 +1,13 @@
-from flask import render_template, flash, redirect, request, url_for, abort
+from datetime import datetime
+
+from flask import render_template, flash, redirect, request, url_for, send_file
 from flask.ext.login import login_user, login_required, current_user, logout_user
 
 from . import app, db
 from .forms import LoginForm, RegistrationForm, BookForm
-from .models import Book, User, Favorite
+from .models import Book, User, Click
+from io import BytesIO
+import matplotlib.pyplot as plt
 
 
 def flash_errors(form, category="warning"):
@@ -39,10 +43,15 @@ def new_book():
                            post_url=url_for("new_book"),
                            button="Add book")
 
+
 @app.route("/book/<int:id>")
 def goto_book(id):
     book = Book.query.get_or_404(id)
+    click = Click(book=book, clicked_at=datetime.now())
+    db.session.add(click)
+    db.session.commit()
     return redirect(book.url, code=301)
+
 
 @app.route("/book/<int:id>/edit", methods=["GET", "POST"])
 @login_required
@@ -69,6 +78,28 @@ def add_favorite(id):
     db.session.commit()
     flash("You have added {} as a favorite.".format(book.title))
     return redirect(url_for("index"))
+
+
+@app.route("/book/<int:id>/data")
+def book_data(id):
+    book = Book.query.get_or_404(id)
+    return render_template("book_data.html",
+                           book=book)
+
+
+@app.route("/book/<int:id>_clicks.png")
+def book_clicks_chart(id):
+    book = Book.query.get_or_404(id)
+    click_data = book.clicks_by_day()
+    dates = [c[0] for c in click_data]
+    num_clicks = [c[1] for c in click_data]
+
+    fig = BytesIO()
+    plt.plot_date(x=dates, y=num_clicks, fmt="-")
+    plt.savefig(fig)
+    plt.clf()
+    fig.seek(0)
+    return send_file(fig, mimetype="image/png")
 
 
 @app.route("/login", methods=["GET", "POST"])

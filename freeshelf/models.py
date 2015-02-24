@@ -1,6 +1,7 @@
 from flask.ext.login import UserMixin
 
 from . import db, bcrypt, login_manager
+from sqlalchemy import func
 
 
 @login_manager.user_loader
@@ -23,6 +24,12 @@ class Book(db.Model):
     @property
     def author_string(self):
         return ", ".join(author.name for author in self.authors)
+
+    def clicks_by_day(self):
+        click_date = func.cast(Click.clicked_at, db.Date)
+        return db.session.query(click_date, func.count(Click.id)). \
+            group_by(click_date).filter_by(book_id=self.id). \
+            order_by(click_date).all()
 
     def __repr__(self):
         return "<Book {}>".format(self.title)
@@ -50,6 +57,14 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return "<User {}>".format(self.email)
+
+
+class Click(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    clicked_at = db.Column(db.DateTime)
+
+    book = db.relationship("Book", backref="clicks")
 
 
 Favorite = db.Table('favorite',

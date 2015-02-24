@@ -8,7 +8,7 @@
     <ul class="blocks-{{ block_count }}">
         {% for book in books %}
             <li class="book {% if loop.index % block_count == 1 %}block-first{% endif %}">
-                <a href="{{ book.url }}">{{ book.title }}</a>
+                <a class="book-link" href="{{ book.url }}" data-link="{{ url_for("goto_book", id=book.id) }}">{{ book.title }}</a>
                 {% if book in current_user.favorite_books %}
                     <i class="fa fa-star"></i>
                 {% endif %}

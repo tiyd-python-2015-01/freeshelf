@@ -39,8 +39,12 @@ def new_book():
                            post_url=url_for("new_book"),
                            button="Add book")
 
+@app.route("/book/<int:id>")
+def goto_book(id):
+    book = Book.query.get(id)
+    return redirect(book.url, code=301)
 
-@app.route("/book/<int:id>", methods=["GET", "POST"])
+@app.route("/book/<int:id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_book(id):
     book = Book.query.get(id)

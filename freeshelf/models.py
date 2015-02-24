@@ -1,5 +1,6 @@
-from . import db, bcrypt, login_manager
 from flask.ext.login import UserMixin
+
+from . import db, bcrypt, login_manager
 
 
 @login_manager.user_loader
@@ -24,6 +25,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     encrypted_password = db.Column(db.String(60))
 
+    favorite_books = db.relationship('Book', secondary='favorite')
+
     def get_password(self):
         return getattr(self, "_password", None)
 
@@ -36,30 +39,11 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.encrypted_password, password)
 
-    @property
-    def favorite_books(self):
-        return [favorite.book for favorite in self.favorites]
-
     def __repr__(self):
         return "<User {}>".format(self.email)
 
 
-class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-
-    user = db.relationship('User', backref=db.backref('favorites', lazy='dynamic'))
-    book = db.relationship('Book')
-
-
-
-
-
-
-
-
-
-
-
-
+Favorite = db.Table('favorite',
+                    db.Column('id', db.Integer, primary_key=True, autoincrement=True),
+                    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                    db.Column('book_id', db.Integer, db.ForeignKey('book.id')))

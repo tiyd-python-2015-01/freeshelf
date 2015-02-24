@@ -61,8 +61,7 @@ def edit_book(id):
 @login_required
 def add_favorite(id):
     book = Book.query.get(id)
-    favorite = Favorite(user=current_user, book=book)
-    db.session.add(favorite)
+    current_user.favorite_books.append(book)
     db.session.commit()
     flash("You have added {} as a favorite.".format(book.title))
     return redirect(url_for("index"))

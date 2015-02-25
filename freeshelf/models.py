@@ -21,7 +21,7 @@ class Book(db.Model):
         days = timedelta(days=days)
         date_from = date.today() - days
 
-        click_date = func.cast(Click.clicked_at, db.Date)
+        click_date = func.date_trunc('day', Click.clicked_at)
         return db.session.query(click_date, func.count(Click.id)). \
             group_by(click_date). \
             filter(and_(Click.book_id == self.id,

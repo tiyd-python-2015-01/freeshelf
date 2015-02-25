@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 import csv
 import os
+import random
+from datetime import datetime
 
-from flask.ext.script import Manager, Shell, Server
+from flask.ext.script import Manager, Server
 from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
 from freeshelf import create_app, db, models
+
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_PATH = os.path.join(HERE, 'tests')
@@ -32,11 +35,13 @@ def make_shell_context():
 def test():
     """Run the tests."""
     import pytest
+
     exit_code = pytest.main([TEST_PATH, '--verbose'])
     return exit_code
 
+
 @manager.command
-def seed():
+def seed_books():
     """Seed the books with all books in seed_books.csv."""
     books_added = 0
     books_updated = 0
@@ -55,6 +60,24 @@ def seed():
         db.session.commit()
         print("{} books added, {} books updated.".format(books_added, books_updated))
 
+
+@manager.command
+def seed_clicks():
+    """Add a bunch of click data."""
+    max_time = int(datetime.now().timestamp())
+    min_time = max_time - (30 * 24 * 60 * 60)
+    center = min_time + (max_time - min_time) / 2
+    stdev = 5 * 24 * 60 * 60
+
+    books = models.Book.query.all()
+    for book in books:
+        median_date = random.gauss(center, stdev)
+        for _ in range(random.randint(100, 500)):
+            click = models.Click(
+                book=book,
+                clicked_at=datetime.fromtimestamp(random.gauss(median_date, stdev)))
+            db.session.add(click)
+    db.session.commit()
 
 
 if __name__ == '__main__':

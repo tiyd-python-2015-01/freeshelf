@@ -2,7 +2,7 @@
 {% import "forms.html" as forms %}
 
 {% block body %}
-    <form method="POST" action="{{ url_for("login") }}" class="forms">
+    <form method="POST" action="{{ url_for("users.login") }}" class="forms">
         {{ form.hidden_tag() }}
         {{ forms.field(form.email, size=20) }}
         {{ forms.field(form.password, size=20) }}

@@ -1,7 +1,8 @@
 from flask.ext.login import UserMixin
 
 from . import db, bcrypt, login_manager
-from sqlalchemy import func
+from sqlalchemy import func, and_
+from datetime import date, timedelta, datetime
 
 
 @login_manager.user_loader
@@ -16,10 +17,15 @@ class Book(db.Model):
     description = db.Column(db.Text)
     url = db.Column(db.String(255), nullable=False, unique=True)
 
-    def clicks_by_day(self):
+    def clicks_by_day(self, days=30):
+        days = timedelta(days=days)
+        date_from = date.today() - days
+
         click_date = func.cast(Click.clicked_at, db.Date)
         return db.session.query(click_date, func.count(Click.id)). \
-            group_by(click_date).filter_by(book_id=self.id). \
+            group_by(click_date). \
+            filter(and_(Click.book_id == self.id,
+                        click_date >= str(date_from))). \
             order_by(click_date).all()
 
     def __repr__(self):

@@ -1,4 +1,4 @@
-"""Add favorite table
+"""Add favorites
 
 Revision ID: 29fa612b7c8
 Revises: 43200d49d65

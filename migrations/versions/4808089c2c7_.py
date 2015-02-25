@@ -1,4 +1,4 @@
-"""Adding authors to books
+"""Add authors column
 
 Revision ID: 4808089c2c7
 Revises: 29fa612b7c8

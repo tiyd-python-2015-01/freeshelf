@@ -46,17 +46,14 @@ def new_book():
 
 @app.route("/book/<int:id>")
 def goto_book(id):
-    book = Book.query.get_or_404(id)
-    click = Click(book=book, clicked_at=datetime.now())
-    db.session.add(click)
-    db.session.commit()
+    book = Book.query.get(id)
     return redirect(book.url, code=301)
 
 
 @app.route("/book/<int:id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_book(id):
-    book = Book.query.get_or_404(id)
+    book = Book.query.get(id)
     form = BookForm(obj=book)
     if form.validate_on_submit():
         form.populate_obj(book)
@@ -73,7 +70,7 @@ def edit_book(id):
 @app.route("/book/<int:id>/favorite", methods=["POST"])
 @login_required
 def add_favorite(id):
-    book = Book.query.get_or_404(id)
+    book = Book.query.get(id)
     current_user.favorite_books.append(book)
     db.session.commit()
     flash("You have added {} as a favorite.".format(book.title))

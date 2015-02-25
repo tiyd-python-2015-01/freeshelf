@@ -1,4 +1,4 @@
-"""Add book table
+"""Create books
 
 Revision ID: 2b33b099d11
 Revises: None

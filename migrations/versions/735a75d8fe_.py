@@ -1,14 +1,14 @@
 """ Add click table
 
 Revision ID: 735a75d8fe
-Revises: 7e095801da
+Revises: 4808089c2c7
 Create Date: 2015-02-24 13:58:27.831915
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '735a75d8fe'
-down_revision = '7e095801da'
+down_revision = '4808089c2c7'
 
 from alembic import op
 import sqlalchemy as sa

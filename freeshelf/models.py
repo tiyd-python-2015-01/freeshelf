@@ -9,21 +9,12 @@ def load_user(id):
     return User.query.get(id)
 
 
-class Author(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), nullable=False)
-
-
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
+    authors = db.Column(db.Text)
     description = db.Column(db.Text)
     url = db.Column(db.String(255), nullable=False, unique=True)
-    authors = db.relationship('Author', secondary='authorship')
-
-    @property
-    def author_string(self):
-        return ", ".join(author.name for author in self.authors)
 
     def clicks_by_day(self):
         click_date = func.cast(Click.clicked_at, db.Date)
@@ -71,8 +62,3 @@ Favorite = db.Table('favorite',
                     db.Column('id', db.Integer, primary_key=True, autoincrement=True),
                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                     db.Column('book_id', db.Integer, db.ForeignKey('book.id')))
-
-Authorship = db.Table('authorship',
-                      db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
-                      db.Column('author_id', db.Integer, db.ForeignKey('author.id')),
-                      db.UniqueConstraint('book_id', 'author_id'))

@@ -27,7 +27,7 @@ class TestBookClass:
         session.add(book)
         session.commit()
 
-        response = client.post('/book/' + str(book.id), data=dict(
+        response = client.post('/book/' + str(book.id) + "/edit", data=dict(
             title="Test Book",
             authors="Test Author",
             url="http://example.org/book/"

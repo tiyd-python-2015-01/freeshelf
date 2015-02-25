@@ -10,6 +10,7 @@ from .extensions import (
 )
 
 SQLALCHEMY_DATABASE_URI = "postgres://localhost/freeshelf"
+
 DEBUG = True
 SECRET_KEY = 'development-key'
 DEBUG_TB_INTERCEPT_REDIRECTS = False

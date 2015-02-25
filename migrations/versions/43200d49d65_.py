@@ -1,4 +1,4 @@
-"""Added user table
+"""Create users
 
 Revision ID: 43200d49d65
 Revises: 2b33b099d11

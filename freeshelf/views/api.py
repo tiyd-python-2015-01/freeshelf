@@ -1,3 +1,4 @@
+import base64
 import json
 
 from flask import Blueprint, jsonify, request, abort, url_for
@@ -26,7 +27,9 @@ def authorize_user(request):
     api_key = request.headers.get('Authorization')
     if api_key:
         api_key = api_key.replace('Basic ', '', 1)
+        api_key = base64.b64decode(api_key).decode("utf-8")
         email, password = api_key.split(":")
+        
         user = User.query.filter_by(email=email).first()
         if user.check_password(password):
             return user

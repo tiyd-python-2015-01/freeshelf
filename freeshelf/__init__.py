@@ -12,6 +12,7 @@ from .extensions import (
 from . import models
 from .views.users import users
 from .views.books import books
+from .views.api import api
 
 
 SQLALCHEMY_DATABASE_URI = "postgres://localhost/freeshelf"
@@ -26,6 +27,7 @@ def create_app():
     app.config.from_object(__name__)
     app.register_blueprint(users)
     app.register_blueprint(books)
+    app.register_blueprint(api, url_prefix="/api/v1")
 
     config.init_app(app)
     db.init_app(app)

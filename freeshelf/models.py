@@ -28,6 +28,14 @@ class Book(db.Model):
                         click_date >= str(date_from))). \
             order_by(click_date).all()
 
+
+    def to_dict(self):
+        return {"id": self.id,
+                "title": self.title,
+                "authors": self.authors,
+                "url": self.url,
+                "description": self.description}
+
     def __repr__(self):
         return "<Book {}>".format(self.title)
 

@@ -3,10 +3,9 @@ import os
 
 import pytest
 
-from freeshelf import app as _app
+from freeshelf import create_app
 from freeshelf import db as _db
 from freeshelf.models import User
-
 
 dbfile = tempfile.NamedTemporaryFile(delete=False)
 dbfile.close()
@@ -20,6 +19,7 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 SQLALCHEMY_DATABASE_URI = TEST_DATABASE_URI
 WTF_CSRF_ENABLED = False
 
+_app = create_app()
 _app.config.from_object(__name__)
 
 @pytest.fixture

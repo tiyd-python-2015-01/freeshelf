@@ -19,15 +19,18 @@ DEBUG = True
 SECRET_KEY = 'development-key'
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 
-app = Flask("freeshelf")
-app.config.from_object(__name__)
-app.register_blueprint(users)
-app.register_blueprint(books)
+def create_app():
+    app = Flask("freeshelf")
+    app.config.from_object(__name__)
+    app.register_blueprint(users)
+    app.register_blueprint(books)
 
-config.init_app(app)
-db.init_app(app)
-debug_toolbar.init_app(app)
-migrate.init_app(app, db)
-bcrypt.init_app(app)
-login_manager.init_app(app)
-login_manager.login_view = "login"
+    config.init_app(app)
+    db.init_app(app)
+    debug_toolbar.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = "login"
+
+    return app

@@ -1,1 +1,1 @@
-web: gunicorn freeshelf:app --log-file=-
+web: gunicorn manager:app --log-file=-

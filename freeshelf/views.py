@@ -46,7 +46,10 @@ def new_book():
 
 @app.route("/book/<int:id>")
 def goto_book(id):
-    book = Book.query.get(id)
+    book = Book.query.get_or_404(id)
+    click = Click(book=book, clicked_at=datetime.now())
+    db.session.add(click)
+    db.session.commit()
     return redirect(book.url, code=301)
 
 

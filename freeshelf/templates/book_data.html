@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1>{{ book.title }}</h1>
-    <h2>by {{ book.author_string }}</h2>
+    <h2>by {{ book.authors }}</h2>
 
     <h3>Clicks</h3>
     <img src="{{ url_for("book_clicks_chart", id=book.id) }}" />

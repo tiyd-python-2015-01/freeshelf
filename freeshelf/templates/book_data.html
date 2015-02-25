@@ -5,5 +5,5 @@
     <h2>by {{ book.author_string }}</h2>
 
     <h3>Clicks</h3>
-    <img src="{{ url_for("book_clicks_chart", id=book.id) }}" />
+    <img src="{{ url_for(".book_clicks_chart", id=book.id) }}" />
 {% endblock %}

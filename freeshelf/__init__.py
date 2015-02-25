@@ -9,6 +9,10 @@ from .extensions import (
     config,
 )
 
+from .views.users import users
+from .views.books import books
+from . import models
+
 SQLALCHEMY_DATABASE_URI = "postgres://localhost/freeshelf"
 
 DEBUG = True
@@ -17,6 +21,8 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 
 app = Flask("freeshelf")
 app.config.from_object(__name__)
+app.register_blueprint(users)
+app.register_blueprint(books)
 
 config.init_app(app)
 db.init_app(app)
@@ -25,5 +31,3 @@ migrate.init_app(app, db)
 bcrypt.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
-
-from . import views, models

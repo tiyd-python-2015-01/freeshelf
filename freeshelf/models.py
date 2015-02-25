@@ -1,6 +1,6 @@
 from flask.ext.login import UserMixin
 
-from . import db, bcrypt, login_manager
+from .extensions import db, bcrypt, login_manager
 from sqlalchemy import func
 
 

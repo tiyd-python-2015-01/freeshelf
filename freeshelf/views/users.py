@@ -13,7 +13,8 @@ users = Blueprint("users", __name__)
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.select().where(User.email == form.email.data).first()
+
         if user and user.check_password(form.password.data):
             login_user(user)
             flash("Logged in successfully.")
@@ -35,15 +36,14 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.select().where(User.email == form.email.data).first()
         if user:
             flash("A user with that email address already exists.")
         else:
             user = User(name=form.name.data,
                         email=form.email.data,
                         password=form.password.data)
-            db.session.add(user)
-            db.session.commit()
+            user.save()
             login_user(user)
             flash("You have been registered and logged in.")
             return redirect(url_for("books.index"))

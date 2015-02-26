@@ -48,7 +48,7 @@ def seed_books():
     with open('seed_books.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            book = models.Book.query.filter_by(url=row['url']).first()
+            book = models.Book.select().where(models.Book.url == row['url']).first()
             if book is None:
                 book = models.Book()
                 books_added += 1
@@ -56,8 +56,7 @@ def seed_books():
                 books_updated += 1
             for key, value in row.items():
                 setattr(book, key, value)
-            db.session.add(book)
-        db.session.commit()
+            book.save()
         print("{} books added, {} books updated.".format(books_added, books_updated))
 
 
@@ -69,15 +68,14 @@ def seed_clicks():
     center = min_time + (max_time - min_time) / 2
     stdev = 5 * 24 * 60 * 60
 
-    books = models.Book.query.all()
+    books = models.Book.select()
     for book in books:
         median_date = random.gauss(center, stdev)
         for _ in range(random.randint(100, 500)):
             click = models.Click(
                 book=book,
                 clicked_at=datetime.fromtimestamp(random.gauss(median_date, stdev)))
-            db.session.add(click)
-    db.session.commit()
+            click.save()
 
 
 if __name__ == '__main__':

@@ -5,7 +5,6 @@ from flask import Blueprint, render_template, flash, redirect, url_for, send_fil
 from flask.ext.login import login_required, current_user
 import matplotlib.pyplot as plt
 
-from ..extensions import db
 from ..forms import BookForm
 from ..models import Book, Click
 
@@ -15,7 +14,7 @@ books = Blueprint("books", __name__)
 
 @books.route("/")
 def index():
-    books = Book.query.all()
+    books = Book.select()
     return render_template("index.html", books=books)
 
 
@@ -24,13 +23,12 @@ def index():
 def new_book():
     form = BookForm()
     if form.validate_on_submit():
-        book = Book.query.filter_by(url=form.url.data).first()
+        book = Book.select().where(Book.url == form.url.data).first()
         if book:
             flash("A book with that URL already exists.")
         else:
             book = Book(**form.data)
-            db.session.add(book)
-            db.session.commit()
+            book.save()
             flash("Your book has been added.")
             return redirect(url_for("books.index"))
 
@@ -42,21 +40,20 @@ def new_book():
 
 @books.route("/book/<int:id>")
 def goto_book(id):
-    book = Book.query.get_or_404(id)
+    book = Book.get_or_404(Book.id == id)
     click = Click(book=book, clicked_at=datetime.now())
-    db.session.add(click)
-    db.session.commit()
+    click.save()
     return redirect(book.url, code=301)
 
 
 @books.route("/book/<int:id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_book(id):
-    book = Book.query.get(id)
+    book = Book.get_or_404(Book.id == id)
     form = BookForm(obj=book)
     if form.validate_on_submit():
         form.populate_obj(book)
-        db.session.commit()
+        book.save()
         flash("The book has been updated.")
         return redirect(url_for("books.index"))
 
@@ -69,16 +66,16 @@ def edit_book(id):
 @books.route("/book/<int:id>/favorite", methods=["POST"])
 @login_required
 def add_favorite(id):
-    book = Book.query.get(id)
+    book = Book.get_or_404(Book.id == id)
     current_user.favorite_books.append(book)
-    db.session.commit()
+    current_user.save()
     flash("You have added {} as a favorite.".format(book.title))
     return redirect(url_for("books.index"))
 
 
 @books.route("/book/<int:id>/data")
 def book_data(id):
-    book = Book.query.get_or_404(id)
+    book = Book.get_or_404(Book.id == id)
     return render_template("book_data.html",
                            book=book)
 
@@ -104,7 +101,7 @@ def make_clicks_chart(book):
 
 @books.route("/book/<int:id>_clicks.png")
 def book_clicks_chart(id):
-    book = Book.query.get_or_404(id)
+    book = Book.get_or_404(Book.id == id)
     make_clicks_chart(book)
 
     fig = BytesIO()

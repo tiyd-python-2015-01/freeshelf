@@ -1,9 +1,7 @@
 from flask import Flask
-from flask.ext.wtf import CsrfProtect
 
 from .extensions import (
     db,
-    migrate,
     debug_toolbar,
     bcrypt,
     login_manager,
@@ -16,7 +14,7 @@ from .views.books import books
 from .views.api import api
 
 
-SQLALCHEMY_DATABASE_URI = "postgres://localhost/freeshelf"
+DATABASE = "postgres://localhost/freeshelf"
 
 DEBUG = True
 SECRET_KEY = 'development-key'
@@ -33,10 +31,8 @@ def create_app():
     config.init_app(app)
     db.init_app(app)
     debug_toolbar.init_app(app)
-    migrate.init_app(app, db)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = "users.login"
-
 
     return app

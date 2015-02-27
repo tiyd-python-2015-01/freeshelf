@@ -3,8 +3,8 @@ import os
 
 import pytest
 
-from freeshelf import app as _app
-from freeshelf import db as _db
+from freeshelf import create_app
+from freeshelf.extensions import db as _db
 from freeshelf.models import User
 
 
@@ -20,12 +20,14 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 SQLALCHEMY_DATABASE_URI = TEST_DATABASE_URI
 WTF_CSRF_ENABLED = False
 
+_app = create_app()
 _app.config.from_object(__name__)
 
 @pytest.fixture
 def app(request):
     """Session-wide test `Flask` application."""
     # Establish an application context before running the tests.
+
     ctx = _app.app_context()
     ctx.push()
 

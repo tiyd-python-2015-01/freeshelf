@@ -8,9 +8,10 @@ _login = login
 def login(user, client):
     _login(user, client)
 
+
 @pytest.mark.usefixtures("login")
 class TestBookClass:
-    def test_creating_book(self, client, session):
+    def test_creating_book(self, client):
         response = client.post('/book/new', data=dict(
             title="Test Book",
             url="http://example.org/book/"
@@ -22,10 +23,10 @@ class TestBookClass:
         assert book is not None
 
 
-    def test_editing_book(self, client, session):
+    def test_editing_book(self, db, client):
         book = Book(title="Test Book", url="http://example.org/book/")
-        session.add(book)
-        session.commit()
+        db.session.add(book)
+        db.session.commit()
 
         response = client.post('/book/' + str(book.id) + "/edit", data=dict(
             title="Test Book",
@@ -35,6 +36,6 @@ class TestBookClass:
 
         assert "has been updated" in str(response.data)
 
-        session.refresh(book)
+        db.session.refresh(book)
         assert book.authors == "Test Author"
 

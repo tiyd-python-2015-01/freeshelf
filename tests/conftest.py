@@ -1,5 +1,4 @@
 import tempfile
-import os
 
 import pytest
 
@@ -20,27 +19,16 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 SQLALCHEMY_DATABASE_URI = TEST_DATABASE_URI
 WTF_CSRF_ENABLED = False
 
-_app = create_app()
-_app.config.from_object(__name__)
 
 @pytest.fixture
-def app(request):
-    """Session-wide test `Flask` application."""
-    # Establish an application context before running the tests.
-
-    ctx = _app.app_context()
-    ctx.push()
-
-    def teardown():
-        ctx.pop()
-
-    request.addfinalizer(teardown)
-    return _app
+def app():
+    app = create_app()
+    app.config.from_object(__name__)
+    return app
 
 
 @pytest.fixture
 def db(app, request):
-    """Session-wide test database."""
     def teardown():
         _db.drop_all()
 
@@ -48,39 +36,16 @@ def db(app, request):
     _db.create_all()
 
     request.addfinalizer(teardown)
+
+    _db.app = app
     return _db
 
 
 @pytest.fixture
-def session(db, request):
-    """Creates a new database session for a test."""
-    connection = db.engine.connect()
-    transaction = connection.begin()
-
-    options = dict(bind=connection)
-    session = db.create_scoped_session(options=options)
-
-    db.session = session
-
-    def teardown():
-        transaction.rollback()
-        connection.close()
-        session.remove()
-
-    request.addfinalizer(teardown)
-    return session
-
-
-@pytest.fixture
-def client(app, db):
-    return app.test_client()
-
-
-@pytest.fixture
-def user(session):
+def user(db):
     user = User(name="test", email="test@example.org", password="password")
-    session.add(user)
-    session.commit()
+    db.session.add(user)
+    db.session.commit()
     return user
 
 

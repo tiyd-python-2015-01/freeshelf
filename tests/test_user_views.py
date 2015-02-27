@@ -1,7 +1,7 @@
 from . import login
 
 
-def test_register(client):
+def test_register(db, client):
     response = client.post('/register', data=dict(
         name="test",
         email="test@example.org",

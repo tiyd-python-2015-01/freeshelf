@@ -23,12 +23,10 @@ def unauthorized(request):
 
 @login_manager.request_loader
 def authorize_user(request):
-    # Authorization: Basic username:password
-    api_key = request.headers.get('Authorization')
-    if api_key:
-        api_key = api_key.replace('Basic ', '', 1)
-        api_key = base64.b64decode(api_key).decode("utf-8")
-        email, password = api_key.split(":")
+    authorization = request.authorization
+    if authorization:
+        email = authorization['username']
+        password = authorization['password']
 
         user = User.query.filter_by(email=email).first()
         if user.check_password(password):

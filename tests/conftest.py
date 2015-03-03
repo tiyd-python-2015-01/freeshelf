@@ -4,7 +4,7 @@ import pytest
 
 from freeshelf import create_app
 from freeshelf.extensions import db as _db
-from freeshelf.models import User
+from freeshelf.models import User, Book
 
 
 dbfile = tempfile.NamedTemporaryFile(delete=False)
@@ -47,6 +47,13 @@ def user(db):
     db.session.add(user)
     db.session.commit()
     return user
+
+@pytest.fixture
+def book(db):
+    book = Book(title="A Cool Book", url="http://example.org/book", authors="Some People")
+    db.session.add(book)
+    db.session.commit()
+    return book
 
 
 

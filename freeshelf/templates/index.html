@@ -7,10 +7,11 @@
 
     <ul class="blocks-{{ block_count }}">
         {% for book in books %}
-            <li class="book {% if loop.index % block_count == 1 %}block-first{% endif %}">
-                <a class="book-link" href="{{ book.url }}" data-link="{{ url_for("books.goto_book", id=book.id) }}">{{ book.title }}</a>
+            <li id="book-{{ book.id }}" class="book {% if loop.index % block_count == 1 %}block-first{% endif %}">
+                <a class="book-link" href="{{ book.url }}"
+                   data-link="{{ url_for("books.goto_book", id=book.id) }}">{{ book.title }}</a>
                 {% if book in current_user.favorite_books %}
-                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star favorite"></i>
                 {% endif %}
                 {% if book.authors %}
                     <br/>
@@ -23,13 +24,14 @@
 
                 {% if current_user.is_active() %}
                     <div class="book-actions">
-                        <a class="btn btn-smaller" href="{{ url_for("books.edit_book", id=book.id) }}">Edit book</a>
-                        {% if book not in current_user.favorite_books %}
-                            <form action="{{ url_for("books.add_favorite", id=book.id) }}" method="post" class="inline">
-                                <input type="submit" class="btn btn-smaller" value="Add as favorite"/>
-                            </form>
-                        {% endif %}
-                        <a class="btn btn-smaller" href="{{ url_for("books.book_data", id=book.id) }}">Click data</a>
+                        <span class="btn-group">
+                            <a class="btn btn-smaller" href="{{ url_for("books.edit_book", id=book.id) }}">Edit book</a>
+                            {% if book not in current_user.favorite_books %}
+                                <button class="btn btn-smaller add-favorite" data-book-id="{{ book.id }}">Add as favorite</button>
+                            {% endif %}
+                            <a class="btn btn-smaller" href="{{ url_for("books.book_data", id=book.id) }}">Click
+                                data</a>
+                        </span>
                     </div>
                 {% endif %}
             </li>
